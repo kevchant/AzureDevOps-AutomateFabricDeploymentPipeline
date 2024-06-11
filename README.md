@@ -1,10 +1,8 @@
-# AzDo-AutomateFabricDeploymentPipelineAll
+# AzureDevOps-AutomateFabricDeploymentPipelineAll
 
-Contains a template that you can use to automate your Microsoft Fabric Deployment Pipeline deployments using YAML Pipelines in Azure DevOps. Based on a blog post I wrote called '[Update Fabric Deployment Pipeline stages with DeploymentPipelines-DeployAll and YAML Pipelines]()'.
+Contains a template that you can use to automate your Microsoft Fabric Deployment Pipeline deployments using YAML Pipelines in Azure DevOps. Based on a blog post I wrote called '[Update Fabric Deployment Pipeline stages with DeploymentPipelines-DeployAll and YAML Pipelines](https://www.kevinrchant.com/2024/06/11/update-fabric-deployment-pipeline-stages-with-deploymentpipelines-deployall-and-yaml-pipelines/)'.
 
 It can be used to automate the deployments to different stages within a deployment pipeline.
-
-A brief overview is below. However, there is also a [wiki for this project](https://github.com/kevchant/AzDo-FabricDWDBProject/wiki).
 
 It uses a YAML pipeline, which you can find in the root of this repository. It utilizes a PowerShell script which you can find in the scripts folder.
 
