@@ -1,0 +1,75 @@
+trigger:
+ - main
+
+variables:
+- group: GIDemoS
+- group: GIDemoNS
+
+pool:
+  # vmimage: 'windows-latest'
+  name: $(agentpool)
+
+stages:
+- stage: Test
+  displayName: 'Deploy to Test'
+  jobs:
+    - deployment: 'DeployTest'
+      displayName: 'Deploy to Test'
+      environment: Test
+
+      # Just to raise awareness that you can select pools at different stages
+      # pool: 
+      #   vmImage: 'windows-latest'
+
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - checkout: self
+              path: 'self'
+          
+            - task: PowerShell@2
+              inputs:
+                targetType: 'inline'
+                script: |
+                  $SecureStringPwd = ConvertTo-SecureString $(servicePrincipalKey) -AsPlainText -Force
+                  $pscredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $(servicePrincipalId), $SecureStringPwd
+                  
+                  Connect-AzAccount -ServicePrincipal -Credential $pscredential -Tenant $(tenantId)
+
+            - task: PowerShell@2
+              inputs:
+                targetType: 'inline'
+                script: '.\scripts\DeploymentPipelines-DeployAll.ps1 -deploymentPipelineName $(deploymentPipelineName) -sourceStageName $(DevStageName) -targetStageName $(TestStageName) -deploymentNote $(deploymentNote)'
+
+- stage: Prod
+  displayName: 'Deploy to Production'
+  jobs:
+    - deployment: 'DeployProd'
+      displayName: 'Deploy to Prod'
+      environment: Production
+
+      # Just to raise awareness that you can select pools at different stages
+      # pool: 
+      #   vmImage: 'windows-latest'
+
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - checkout: self
+              path: 'self'
+
+            - task: PowerShell@2
+              inputs:
+                targetType: 'inline'
+                script: |
+                  $SecureStringPwd = ConvertTo-SecureString $(servicePrincipalKey) -AsPlainText -Force
+                  $pscredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $(servicePrincipalId), $SecureStringPwd
+                  
+                  Connect-AzAccount -ServicePrincipal -Credential $pscredential -Tenant $(tenantId)
+
+            - task: PowerShell@2
+              inputs:
+                targetType: 'inline'
+                script: '.\scripts\DeploymentPipelines-DeployAll.ps1 -deploymentPipelineName $(deploymentPipelineName) -sourceStageName $(TestStageName) -targetStageName $(ProdStageName) -deploymentNote $(deploymentNote)'
