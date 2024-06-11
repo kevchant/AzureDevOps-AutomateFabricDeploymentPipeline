@@ -2,7 +2,9 @@
 
 Contains a template that you can use to automate your Microsoft Fabric Deployment Pipeline deployments using YAML Pipelines in Azure DevOps. Based on a blog post I wrote called '[Update Fabric Deployment Pipeline stages with DeploymentPipelines-DeployAll and YAML Pipelines](https://www.kevinrchant.com/2024/06/11/update-fabric-deployment-pipeline-stages-with-deploymentpipelines-deployall-and-yaml-pipelines/)'.
 
-It can be used to automate the deployments to different stages within a deployment pipeline.
+It can be used to automate the deployments to different stages within a deployment pipeline. 
+
+**Note:** at this moment in time only Power BI objects are supported when authenticating with a service principal. So you can work with this template to deploy items like reports and semantic models, but not Data Warehouses or Lakehouses at this moment in time.
 
 It uses a YAML pipeline, which you can find in the root of this repository. It utilizes a PowerShell script which you can find in the scripts folder.
 
